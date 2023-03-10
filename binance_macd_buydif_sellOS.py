@@ -78,11 +78,46 @@ def rsi(symbol):
 
     return pd.Series(100 - (100/(1 + RS)), name = "RSI")
 
+def macd_dif(symbol):
+    #특정코인 과거데이터 조회
+    client = Client(api_key, secret)
+
+    klines = client.klines(symbol, '5m', limit=500)
+
+    df = pd.DataFrame(data={
+        'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
+        'open': [float(x[1]) for x in klines],
+        'high': [float(x[2]) for x in klines],
+        'low': [float(x[3]) for x in klines],
+        'close': [float(x[4]) for x in klines],
+        'volume': [float(x[5]) for x in klines],
+        'close_time': [datetime.fromtimestamp(x[6] / 1000, timezone.utc) for x in klines],
+    })
+
+    macd_short, macd_long, macd_signal=12,26,9 #기본값
+
+    df["MACD_short"]=df["close"].ewm(span=macd_short).mean()
+    df["MACD_long"]=df["close"].ewm(span=macd_long).mean()
+    df["MACD"]=df.apply(lambda x: (x["MACD_short"]-x["MACD_long"]), axis=1)
+    df["MACD_signal"]=df["MACD"].ewm(span=macd_signal).mean()  
+    df["MACD_oscillator"]=df.apply(lambda x:(x["MACD"]-x["MACD_signal"]), axis=1)
+
+    #print("MACD : ", df["MACD_oscillator"].iloc[-1])
+    #print("DEA : ", df["MACD_signal"].iloc[-1])
+    #print("DIF : ", df["MACD"].iloc[-1])
+
+    #if df["MACD"].iloc[-1] > 0 :
+    #    print("plus")
+    #else :
+    #    print("minus")
+
+    return df["MACD"]
+
 def macd(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '15m', limit=500)
+    klines = client.klines(symbol, '5m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
@@ -123,11 +158,11 @@ for m in markets:
         all_coin.append(new_m)
 
 #롱 and 숏 몇개 돌릴건지 설정
-coin_buy_index = 1
+coin_buy_index = 3
 #분봉 +2
 delay_time = 62
 #보유머니의 1/n시작
-nmoney = 50
+nmoney = 100
 #배율
 all_leverage = 5
 
@@ -152,13 +187,14 @@ while True:
 
     while i < len(all_coin) : #총 코인 갯수
         try:
-            #coin = all_coin[i]
+            coin = all_coin[i]
             #테스트 이기 때문에 코인은 비트코인 고정
-            coin = 'BTCUSDT'
+            #coin = 'BTCUSDT'
 
-            now_macd = float(macd(coin).iloc[-1])
-            old_macd = float(macd(coin).iloc[-2])
-            old_old_macd = float(macd(coin).iloc[-3])
+            now_macd_dif = float(macd_dif(coin).iloc[-1])
+            old_macd_dif = float(macd_dif(coin).iloc[-2])
+            old_old_macd_dif = float(macd_dif(coin).iloc[-3])
+            old_old_old_macd_dif = float(macd_dif(coin).iloc[-4])
             now = dt.datetime.now()
 
             #선물잔고조회
@@ -183,7 +219,7 @@ while True:
 
 
 ############코인 롱 구매###############
-            if (now_macd > old_macd) and (count_all_buy == 'true'):
+            if (old_old_old_macd_dif < 0) and (old_old_macd_dif < 0) and (old_macd_dif > 0) and (now_macd_dif > 0) and (count_all_buy == 'true'):
                 for n in range(0, coin_buy_index):
                     #보유여부확인
                     positions = balance['info']['positions']
@@ -251,7 +287,7 @@ while True:
                             break
 
 ############코인 숏 구매############
-            if (now_macd < old_macd) and (count_all_sell == 'true'):
+            if (old_old_old_macd_dif > 0) and (old_old_macd_dif > 0) and (old_macd_dif < 0) and (now_macd_dif < 0) and (count_all_sell == 'true'):
                 for n in range(0, coin_buy_index):
                     #보유여부확인
                     positions = balance['info']['positions']
@@ -335,9 +371,10 @@ while True:
                     #macd 추세 전환시 판매
                     now_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-1])
                     old_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-2])
+                    old_old_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-3])
                     
 ####################판매(롱)####################
-                    if (now_macd < old_macd) :
+                    if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
@@ -409,9 +446,10 @@ while True:
                     #macd 추세 전환시 판매
                     now_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-1])
                     old_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-2])
+                    old_old_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-3])
                     
 ####################판매(숏)####################
-                    if (now_macd > old_macd) :
+                    if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
