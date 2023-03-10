@@ -195,6 +195,8 @@ while True:
             old_macd_dif = float(macd_dif(coin).iloc[-2])
             old_old_macd_dif = float(macd_dif(coin).iloc[-3])
             old_old_old_macd_dif = float(macd_dif(coin).iloc[-4])
+            now_macd = float(macd(coin).iloc[-1])
+            old_macd = float(macd(coin).iloc[-2])
             now = dt.datetime.now()
 
             #선물잔고조회
@@ -219,7 +221,7 @@ while True:
 
 
 ############코인 롱 구매###############
-            if (old_old_old_macd_dif < 0) and (old_old_macd_dif < 0) and (old_macd_dif > 0) and (now_macd_dif > 0) and (count_all_buy == 'true'):
+            if (old_old_old_macd_dif < 0) and (old_old_macd_dif < 0) and (old_macd_dif > 0) and (now_macd_dif > 0) and (now_macd > 0) and (old_macd > 0) and (count_all_buy == 'true'):
                 for n in range(0, coin_buy_index):
                     #보유여부확인
                     positions = balance['info']['positions']
@@ -287,7 +289,7 @@ while True:
                             break
 
 ############코인 숏 구매############
-            if (old_old_old_macd_dif > 0) and (old_old_macd_dif > 0) and (old_macd_dif < 0) and (now_macd_dif < 0) and (count_all_sell == 'true'):
+            if (old_old_old_macd_dif > 0) and (old_old_macd_dif > 0) and (old_macd_dif < 0) and (now_macd_dif < 0) and (now_macd < 0) and (old_macd < 0) and (count_all_sell == 'true'):
                 for n in range(0, coin_buy_index):
                     #보유여부확인
                     positions = balance['info']['positions']
