@@ -158,11 +158,11 @@ for m in markets:
         all_coin.append(new_m)
 
 #롱 and 숏 몇개 돌릴건지 설정
-coin_buy_index = 3
+coin_buy_index = 5
 #분봉 +2
 delay_time = 62
 #보유머니의 1/n시작
-nmoney = 100
+nmoney = 50
 #배율
 all_leverage = 5
 
@@ -376,7 +376,8 @@ while True:
                     old_old_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-3])
                     
 ####################판매(롱)####################
-                    if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
+                    if (now_macd < 0) :
+                    #if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
@@ -451,7 +452,8 @@ while True:
                     old_old_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-3])
                     
 ####################판매(숏)####################
-                    if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
+                    if (now_macd > 0) :
+                    #if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
