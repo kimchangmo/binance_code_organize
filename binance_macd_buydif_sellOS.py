@@ -82,7 +82,7 @@ def macd_dif(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '5m', limit=500)
+    klines = client.klines(symbol, '15m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
@@ -94,7 +94,7 @@ def macd_dif(symbol):
         'close_time': [datetime.fromtimestamp(x[6] / 1000, timezone.utc) for x in klines],
     })
 
-    macd_short, macd_long, macd_signal=6,19,9 #기본값
+    macd_short, macd_long, macd_signal=12,26,9 #기본값
 
     df["MACD_short"]=df["close"].ewm(span=macd_short).mean()
     df["MACD_long"]=df["close"].ewm(span=macd_long).mean()
@@ -117,7 +117,7 @@ def macd(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '5m', limit=500)
+    klines = client.klines(symbol, '15m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
@@ -129,7 +129,7 @@ def macd(symbol):
         'close_time': [datetime.fromtimestamp(x[6] / 1000, timezone.utc) for x in klines],
     })
 
-    macd_short, macd_long, macd_signal=6,19,9 #기본값
+    macd_short, macd_long, macd_signal=12,26,9 #기본값
 
     df["MACD_short"]=df["close"].ewm(span=macd_short).mean()
     df["MACD_long"]=df["close"].ewm(span=macd_long).mean()
@@ -158,7 +158,7 @@ for m in markets:
         all_coin.append(new_m)
 
 #롱 and 숏 몇개 돌릴건지 설정
-coin_buy_index = 5
+coin_buy_index = 3
 #분봉 +2
 delay_time = 62
 #보유머니의 1/n시작
@@ -380,8 +380,8 @@ while True:
                     old_old_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-3])
                     
 ####################판매(롱)####################
-                    if (now_macd < 0) :
-                    #if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
+                    #if (now_macd < 0) :
+                    if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
@@ -459,8 +459,8 @@ while True:
                     old_old_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-3])
                     
 ####################판매(숏)####################
-                    if (now_macd > 0) :
-                    #if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
+                    #if (now_macd > 0) :
+                    if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
