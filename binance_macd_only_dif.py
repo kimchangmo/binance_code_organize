@@ -82,7 +82,7 @@ def macd_dif(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '5m', limit=500)
+    klines = client.klines(symbol, '15m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
@@ -94,7 +94,7 @@ def macd_dif(symbol):
         'close_time': [datetime.fromtimestamp(x[6] / 1000, timezone.utc) for x in klines],
     })
 
-    macd_short, macd_long, macd_signal=6,19,9 #기본값
+    macd_short, macd_long, macd_signal=12,26,9 #기본값
 
     df["MACD_short"]=df["close"].ewm(span=macd_short).mean()
     df["MACD_long"]=df["close"].ewm(span=macd_long).mean()
@@ -117,7 +117,7 @@ def macd(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '5m', limit=500)
+    klines = client.klines(symbol, '15m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
@@ -129,7 +129,7 @@ def macd(symbol):
         'close_time': [datetime.fromtimestamp(x[6] / 1000, timezone.utc) for x in klines],
     })
 
-    macd_short, macd_long, macd_signal=6,19,9 #기본값
+    macd_short, macd_long, macd_signal=12,26,9 #기본값
 
     df["MACD_short"]=df["close"].ewm(span=macd_short).mean()
     df["MACD_long"]=df["close"].ewm(span=macd_long).mean()
