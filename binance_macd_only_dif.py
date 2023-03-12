@@ -158,7 +158,7 @@ for m in markets:
         all_coin.append(new_m)
 
 #롱 and 숏 몇개 돌릴건지 설정
-coin_buy_index = 3
+coin_buy_index = 5
 #분봉 +2
 delay_time = 62
 #보유머니의 1/n시작
