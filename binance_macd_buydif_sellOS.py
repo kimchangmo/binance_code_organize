@@ -82,7 +82,7 @@ def macd_dif(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '1m', limit=500)
+    klines = client.klines(symbol, '5m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
@@ -117,7 +117,7 @@ def macd(symbol):
     #특정코인 과거데이터 조회
     client = Client(api_key, secret)
 
-    klines = client.klines(symbol, '1m', limit=500)
+    klines = client.klines(symbol, '5m', limit=500)
 
     df = pd.DataFrame(data={
         'open_time': [datetime.fromtimestamp(x[0] / 1000, timezone.utc) for x in klines],
