@@ -251,6 +251,7 @@ while True:
                         decimal_point = int(decimal_point)
                         
                         if (first_buy_money < balance['USDT']['free']):
+                            print('')
                             print('try buy(long) :', coin)
                             client = r_Client(api_key=api_key, api_secret=secret)
                             #레버리지 설정
@@ -285,6 +286,7 @@ while True:
                             print('time :', now)
                             print('success buy coin(long) :', coin)
                             print('----------------------------------------------------')
+                            print('')
                             time.sleep(1)    
                             break
 
@@ -315,6 +317,7 @@ while True:
                         decimal_point = int(decimal_point)
 
                         if (first_buy_money < balance['USDT']['free']) :
+                            print('')
                             print('try buy(short) :', coin)
                             client = r_Client(api_key=api_key, api_secret=secret)          
                             #레버리지 설정
@@ -349,6 +352,7 @@ while True:
                             print('time :', now)
                             print('success buy coin(short) :', coin)
                             print('----------------------------------------------------')
+                            print('')
                             time.sleep(1)    
                             break
 
@@ -397,6 +401,7 @@ while True:
                         number_of_divisions = 1
                         divisions_purchasing_volume = globals()['old_plus_buy_{}'.format(n)]
 
+                        print('')
                         print('try sell(long) :', globals()['buycoin_buy_{}'.format(n)])
                         if maxQty > divisions_purchasing_volume :
                             #판매
@@ -408,6 +413,7 @@ while True:
                             print('time :', now)
                             print('success sell coin(long) :', globals()['buycoin_buy_{}'.format(n)])
                             print('----------------------------------------------------')
+                            print('')
                             globals()['count_buy_{}'.format(n)] = 'true'
                             time.sleep(1)  
                         else :
@@ -431,6 +437,7 @@ while True:
                                         print('time :', now)
                                         print('success sell coin(long) :', globals()['buycoin_buy_{}'.format(n)])
                                         print('----------------------------------------------------')
+                                        print('')
                                         globals()['count_buy_{}'.format(n)] = 'true'
                                         time.sleep(1)  
                                         break
@@ -473,6 +480,7 @@ while True:
                         number_of_divisions = 1
                         divisions_purchasing_volume = globals()['old_plus_sell_{}'.format(n)]
 
+                        print('')
                         print('try sell(short) :', globals()['buycoin_sell_{}'.format(n)])
                         if maxQty > divisions_purchasing_volume :
                             #판매
@@ -484,6 +492,7 @@ while True:
                             print('time :', now)
                             print('success sell coin(short) :', globals()['buycoin_sell_{}'.format(n)])
                             print('----------------------------------------------------')
+                            print('')
                             globals()['count_sell_{}'.format(n)] = 'true'  
                             time.sleep(1)    
                         else :
@@ -509,6 +518,7 @@ while True:
                                         print('time :', now)
                                         print('success sell coin(short) :', globals()['buycoin_sell_{}'.format(n)])
                                         print('----------------------------------------------------')
+                                        print('')
                                         globals()['count_sell_{}'.format(n)] = 'true'  
                                         time.sleep(1)  
                                         break
