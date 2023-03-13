@@ -379,9 +379,10 @@ while True:
                     #old_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-2])
                     #old_old_macd = float(macd(globals()['buycoin_buy_{}'.format(n)]).iloc[-3])
                     now_macd_dif = float(macd_dif(globals()['buycoin_buy_{}'.format(n)]).iloc[-1])
+                    old_macd_dif = float(macd_dif(globals()['buycoin_buy_{}'.format(n)]).iloc[-2])
                     
 ####################판매(롱)####################
-                    if (now_macd_dif < 0) :
+                    if (now_macd_dif < 0) and (old_macd_dif > 0) :
                     #if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
 
                         #quantity 자리수 설정
@@ -459,9 +460,10 @@ while True:
                     #old_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-2])
                     #old_old_macd = float(macd(globals()['buycoin_sell_{}'.format(n)]).iloc[-3])
                     now_macd_dif = float(macd_dif(globals()['buycoin_sell_{}'.format(n)]).iloc[-1])
+                    old_macd_dif = float(macd_dif(globals()['buycoin_sell_{}'.format(n)]).iloc[-2])
                     
 ####################판매(숏)####################
-                    if (now_macd_dif > 0) :
+                    if (now_macd_dif > 0) and (old_macd_dif < 0) :
                     #if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
 
                         #quantity 자리수 설정
