@@ -94,7 +94,7 @@ def macd_dif(symbol):
         'close_time': [datetime.fromtimestamp(x[6] / 1000, timezone.utc) for x in klines],
     })
 
-    macd_short, macd_long, macd_signal=12,26,9 #기본값
+    macd_short, macd_long, macd_signal=6,19,9 #기본값
 
     df["MACD_short"]=df["close"].ewm(span=macd_short).mean()
     df["MACD_long"]=df["close"].ewm(span=macd_long).mean()
@@ -158,11 +158,11 @@ for m in markets:
         all_coin.append(new_m)
 
 #롱 and 숏 몇개 돌릴건지 설정
-coin_buy_index = 3
+coin_buy_index = 10
 #분봉 +2
 delay_time = 62
 #보유머니의 1/n시작
-nmoney = 50
+nmoney = 40
 #배율
 all_leverage = 5
 
