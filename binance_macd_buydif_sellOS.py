@@ -158,7 +158,7 @@ for m in markets:
         all_coin.append(new_m)
 
 #롱 and 숏 몇개 돌릴건지 설정
-coin_buy_index = 10
+coin_buy_index = 5
 #분봉 +2
 delay_time = 62
 #보유머니의 1/n시작
@@ -381,7 +381,7 @@ while True:
                     
 ####################판매(롱)####################
                     #if (now_macd < 0) :
-                    if ((old_old_macd > 0) and (old_macd < 0) and (now_macd < 0)) or ((float(globals()['water_buy_price_buy_{}'.format(n)]) * 0.995) > globals()['current_price_buy_{}'.format(n)]) :
+                    if (old_old_macd > 0) and (old_macd < 0) and (now_macd < 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
@@ -460,7 +460,7 @@ while True:
                     
 ####################판매(숏)####################
                     #if (now_macd > 0) :
-                    if ((old_old_macd < 0) and (old_macd > 0) and (now_macd > 0)) or ((float(globals()['water_buy_price_sell_{}'.format(n)]) * 1.005) < globals()['current_price_sell_{}'.format(n)]):
+                    if (old_old_macd < 0) and (old_macd > 0) and (now_macd > 0) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
