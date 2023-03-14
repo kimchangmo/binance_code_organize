@@ -381,7 +381,7 @@ while True:
                     
 ####################판매(롱)####################
                     #if (now_macd < 0) :
-                    if ((old_old_macd > 0) and (old_macd < 0) and (now_macd < 0)) or ((float(globals()['water_buy_price_buy_{}'.format(n)]) * 0.995) < globals()['current_price_buy_{}'.format(n)]) :
+                    if ((old_old_macd > 0) and (old_macd < 0) and (now_macd < 0)) or ((float(globals()['water_buy_price_buy_{}'.format(n)]) * 0.995) > globals()['current_price_buy_{}'.format(n)]) :
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
@@ -460,7 +460,7 @@ while True:
                     
 ####################판매(숏)####################
                     #if (now_macd > 0) :
-                    if ((old_old_macd < 0) and (old_macd > 0) and (now_macd > 0)) or ((float(globals()['water_buy_price_sell_{}'.format(n)]) * 1.005) > globals()['current_price_sell_{}'.format(n)]):
+                    if ((old_old_macd < 0) and (old_macd > 0) and (now_macd > 0)) or ((float(globals()['water_buy_price_sell_{}'.format(n)]) * 1.005) < globals()['current_price_sell_{}'.format(n)]):
 
                         #quantity 자리수 설정
                         client = r_Client(api_key=api_key, api_secret=secret)
